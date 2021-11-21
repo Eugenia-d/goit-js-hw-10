@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "notiflix": "^3.2.2"
+    "notiflix": "^3.2.2",
+    "reset-css": "^5.0.1"
   }
 }
