@@ -20,6 +20,28 @@ body {
 }
 
 #country_item {
+  display: flex;
+  justify-content: center;
+  list-style: none;
   font-size: 24px;
   font: Arial;
+}
+
+.text_two {
+  display: flex;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+.data {
+  display: flex;
+
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.text_data {
+  font-family: 'Roboto';
+  font-weight: bold;
+  margin-right: 15px;
+  font-size: 20px;
 }

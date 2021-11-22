@@ -47,15 +47,17 @@ const renderList = array => {
     .map(({ name, flag }) => {
       return `<li id="country_item">${flag} ${name.common}</li>`;
     })
-    .join();
+    .join('');
   countryList.insertAdjacentHTML('beforeend', elements);
 };
 
 const renderCountry = ({ name, flag, population, languages, capital }) => {
-  const markup = `<p><h2 class="text">${flag} ${name.common}</h2></p>
-        <p><span class="text">Capital:</span> ${capital[0]}</p>
-        <p><span class="text">Population:</span> ${population}</p>
-        <p><span class="text">Languages:</span> ${Object.values(languages).join(', ')}</p>`;
+  const markup = `<p><h2 class="text text_two">${flag} ${name.common}</h2></p>
+        <p class="data"><span class="text text_data">Capital:</span> ${capital[0]}</p>
+        <p class="data"><span class="text text_data">Population:</span> ${population}</p>
+        <p class="data"><span class="text text_data">Languages:</span> ${Object.values(
+          languages,
+        ).join(', ')}</p>`;
 
   countryInfo.insertAdjacentHTML('beforeend', markup);
 };
