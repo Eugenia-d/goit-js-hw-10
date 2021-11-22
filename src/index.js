@@ -25,6 +25,7 @@ searchBox.addEventListener(
         onDataReceived(data);
       })
       .catch(error => {
+        console.error(error);
         cleanList();
         Notify.failure('Oops there is no country with that name');
       });
@@ -37,12 +38,11 @@ const onDataReceived = array => {
   } else if (array.length > 1 && array.length <= 10) {
     renderList(array);
   } else if (array.length === 1) {
-    renderCountry;
+    renderCountry(array[0]);
   }
 };
 
 const renderList = array => {
-  console.log('rendering list: ', array);
   const elements = array
     .map(({ name, flag }) => {
       return `<li id="country_item">${flag} ${name.common}</li>`;
@@ -51,10 +51,16 @@ const renderList = array => {
   countryList.insertAdjacentHTML('beforeend', elements);
 };
 
-const renderCountry = data => {
-  console.log('rendering country: ', data);
+const renderCountry = ({ name, flag, population, languages, capital }) => {
+  const markup = `<p><h2 class="text">${flag} ${name.common}</h2></p>
+        <p><span class="text">Capital:</span> ${capital[0]}</p>
+        <p><span class="text">Population:</span> ${population}</p>
+        <p><span class="text">Languages:</span> ${Object.values(languages).join(', ')}</p>`;
+
+  countryInfo.insertAdjacentHTML('beforeend', markup);
 };
 
 const cleanList = () => {
   countryList.innerHTML = '';
+  countryInfo.innerHTML = '';
 };
