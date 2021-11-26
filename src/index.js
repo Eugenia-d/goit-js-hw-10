@@ -1,6 +1,6 @@
 import './css/styles.css';
 import 'reset-css';
-import _ from 'lodash';
+import debounce from 'lodash.debounce';
 import { fetchCountries } from './fetchCountries';
 import { Notify } from 'notiflix';
 
@@ -10,27 +10,27 @@ const searchBox = document.getElementById('search-box');
 const countryList = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info');
 
-searchBox.addEventListener(
-  'input',
-  _.debounce(event => {
-    const search = event.target.value.trim();
+const handleInput = event => {
+  const search = event.target.value.trim();
 
-    if (!search.length) {
-      return;
-    }
+  if (!search.length) {
+    cleanList();
+    return;
+  }
 
-    fetchCountries(search)
-      .then(data => {
-        cleanList();
-        onDataReceived(data);
-      })
-      .catch(error => {
-        console.error(error);
-        cleanList();
-        Notify.failure('Oops there is no country with that name');
-      });
-  }, DEBOUNCE_DELAY),
-);
+  fetchCountries(search)
+    .then(data => {
+      cleanList();
+      onDataReceived(data);
+    })
+    .catch(error => {
+      console.error(error);
+      cleanList();
+      Notify.failure('Oops there is no country with that name');
+    });
+};
+
+searchBox.addEventListener('input', debounce(handleInput, DEBOUNCE_DELAY));
 
 const onDataReceived = array => {
   if (array.length > 10) {
@@ -45,19 +45,17 @@ const onDataReceived = array => {
 const renderList = array => {
   const elements = array
     .map(({ name, flag }) => {
-      return `<li id="country_item">${flag} ${name.common}</li>`;
+      return `<li id="country_item"> <img class="flag" src=${flag}> ${name}</li>`;
     })
     .join('');
   countryList.insertAdjacentHTML('beforeend', elements);
 };
 
 const renderCountry = ({ name, flag, population, languages, capital }) => {
-  const markup = `<p><h2 class="text text_two">${flag} ${name.common}</h2></p>
-        <p class="data"><span class="text text_data">Capital:</span> ${capital[0]}</p>
+  const markup = `<p><h2 class="text text_two"><img class="flag" src=${flag}> ${name}</h2></p>
+        <p class="data"><span class="text text_data">Capital:</span> ${capital}</p>
         <p class="data"><span class="text text_data">Population:</span> ${population}</p>
-        <p class="data"><span class="text text_data">Languages:</span> ${Object.values(
-          languages,
-        ).join(', ')}</p>`;
+        <p class="data"><span class="text text_data">Languages:</span> ${languages[0].name}</p>`;
 
   countryInfo.insertAdjacentHTML('beforeend', markup);
 };
